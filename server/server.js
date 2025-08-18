@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // CORS configuration
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://utkarshgupta.vercel.app', 'https://utkarshgupta-sr931662s-projects.vercel.app'],
+    origin: ['http://localhost:3000', 'https://utkarshgupta.info', 'https://utkarshgupta.vercel.app', 'https://utkarshgupta-sr931662s-projects.vercel.app'],
     methods: 'GET,POST,PUT,DELETE,PATCH,HEAD',
     credentials: true,
   })

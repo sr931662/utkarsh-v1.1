@@ -68,43 +68,39 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.sendContactEmail = async (req, res, next) => {
+exports.sendContactEmail = async (req, res) => {
   try {
-    const { name, email, phone, organization, subject, message } = req.body;
+    const { name, email, subject, message } = req.body;
 
-    const htmlContent = `
-      <h2>New Contact Form Submission</h2>
-      <p><strong>Subject:</strong> ${subject}</p>
-      <p><strong>From:</strong> ${name} (${email})</p>
-      <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-      <p><strong>Organization:</strong> ${organization || 'Not provided'}</p>
-      <h3>Message:</h3>
-      <p>${message.replace(/\n/g, '<br>')}</p>
-    `;
+    // Example Nodemailer transporter
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-    await sendEmail({
-      email: process.env.CONTACT_FORM_RECIPIENT,
-      subject: `New Contact Form Submission: ${subject}`,
-      message: `
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone || 'Not provided'}
-        Organization: ${organization || 'Not provided'}
-
-        Message:
-        ${message}
-      `,
-      html: htmlContent
+    await transporter.sendMail({
+      from: email,
+      to: process.env.EMAIL_USER, // tumhara official email
+      subject: `Contact Form: ${subject}`,
+      text: `From: ${name} <${email}>\n\n${message}`,
     });
 
     res.status(200).json({
       status: 'success',
-      message: 'Message sent successfully',
+      message: 'Message sent successfully!',
     });
   } catch (err) {
-    return next(new AppError('There was an error sending the message. Please try again later.', 500));
+    res.status(500).json({
+      status: 'error',
+      message: 'There was an error sending the message. Please try again later.',
+      stack: err.message, // debug ke liye
+    });
   }
 };
+
 
 // Add these methods to auth-controller.js
 

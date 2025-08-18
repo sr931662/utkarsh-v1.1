@@ -68,7 +68,7 @@ const Dashboard = () => {
             <div className={styles.userAvatar}>
               {user?.profileImage ? (
                 <img 
-                  src={`http://localhost:5000/uploads/Utkarsh-profile.jpg`} 
+                  src={`https://utkarsh-x6xa.onrender.com/uploads/Utkarsh-profile.jpg`} 
                   alt="Profile" 
                   className={styles.avatarImage}
                 />

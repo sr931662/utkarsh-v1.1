@@ -76,7 +76,7 @@ const UploadPublications = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:5000/api/publications/create', {
+      const response = await fetch('https://utkarsh-x6xa.onrender.com/api/publications/create', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

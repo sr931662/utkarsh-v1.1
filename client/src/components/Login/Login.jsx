@@ -36,7 +36,7 @@ const Login = () => {
     clearMessages();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', loginForm);
+      const response = await axios.post('https://utkarsh-x6xa.onrender.com/api/auth/login', loginForm);
       authLogin(response.data.token, response.data.data.user);
 
       const welcomeMessage = response.data.data.user.role === 'superadmin'
@@ -59,7 +59,7 @@ const Login = () => {
     clearMessages();
 
     try {
-      await axios.post('http://localhost:5000/api/auth/send-otp', {
+      await axios.post('https://utkarsh-x6xa.onrender.com/api/auth/send-otp', {
         email: forgotPasswordEmail,
       });
       setOtpSent(true);
@@ -92,7 +92,7 @@ const Login = () => {
 
   try {
     console.log("📤 Sending request to reset password...");
-    axios.post('http://localhost:5000/api/auth/verify-otp-reset', {
+    axios.post('https://utkarsh-x6xa.onrender.com/api/auth/verify-otp-reset', {
       email: forgotPasswordEmail,
       otp,
       newPassword

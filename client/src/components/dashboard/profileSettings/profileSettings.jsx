@@ -999,7 +999,7 @@ const handleSubmit = async (e) => {
           <div className={styles.userAvatarLarge}>
             {user?.profileImage ? (
               <img 
-                src={`http://localhost:5000/uploads/Utkarsh-profile.jpg`} 
+                src={`https://utkarsh-x6xa.onrender.com/uploads/Utkarsh-profile.jpg`} 
                 alt="Profile" 
                 className={styles.avatarImage}
               />
@@ -1308,7 +1308,7 @@ const renderCarouselSettings = () => (
                           ? URL.createObjectURL(item.imageUrl) 
                           : item.imageUrl.startsWith('http') 
                             ? item.imageUrl 
-                            : `http://localhost:5000${item.imageUrl}`
+                            : `https://utkarsh-x6xa.onrender.com${item.imageUrl}`
                       } 
                       alt="Preview" 
                     />

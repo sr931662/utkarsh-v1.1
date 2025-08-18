@@ -63,3 +63,54 @@ exports.sendOTPEmail = async (toEmail, otp) => {
     throw new AppError('Failed to send OTP email', 500);
   }
 };
+
+exports.sendContactEmail = async ({ name, email, phone, organization, subject, message }) => {
+  const params = {
+    Destination: {
+      ToAddresses: [process.env.CONTACT_EMAIL] // Your receiving email
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: 'UTF-8',
+          Data: `
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background: #f7f9fc; border-radius: 8px; border: 1px solid #e1e5ee;">
+              <h2 style="color: #2d3748;">📩 New Contact Form Submission</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+              <p><strong>Organization:</strong> ${organization || 'Not provided'}</p>
+              <p><strong>Message:</strong></p>
+              <p style="white-space: pre-line;">${message}</p>
+            </div>
+          `
+        },
+        Text: {
+          Charset: 'UTF-8',
+          Data: `
+            New Contact Form Submission:
+            Name: ${name}
+            Email: ${email}
+            Phone: ${phone || 'Not provided'}
+            Organization: ${organization || 'Not provided'}
+            Message: ${message}
+          `
+        }
+      },
+      Subject: {
+        Charset: 'UTF-8',
+        Data: `New Contact: ${subject || 'No Subject'}`
+      }
+    },
+    Source: process.env.AWS_SES_FROM_EMAIL,
+    ReplyToAddresses: [email] // allows you to reply directly to sender
+  };
+
+  try {
+    await ses.sendEmail(params).promise();
+    return true;
+  } catch (error) {
+    console.error('AWS SES Error (contact):', error);
+    throw new AppError('Failed to send contact email', 500);
+  }
+};

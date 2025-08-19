@@ -4,6 +4,7 @@ import { useAuth } from '../../context/authContext';
 import { useTheme } from '../../context/ThemeContext';
 import styles from './Login.module.css';
 import axios from 'axios';
+import { Helmet } from 'react-helmet'
 
 const Login = () => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
@@ -122,6 +123,10 @@ const Login = () => {
 
   return (
     <div className={`${styles.loginContainer} ${darkMode ? styles.dark : ''}`}>
+      <Helmet>
+        <title>Login - Mr. Utkarsh Gupta Portfolio</title>
+        <link rel="canonical" href="https://utkarshgupta.info/login" />
+      </Helmet>
       {!showForgotPassword ? (
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <h1>Admin Portal</h1>

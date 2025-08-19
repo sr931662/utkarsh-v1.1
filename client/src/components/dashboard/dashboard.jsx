@@ -3,7 +3,6 @@ import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/authContext';
 import { motion } from 'framer-motion';
 import styles from './dashboard.module.css';
-import { Helmet } from 'react-helmet'
 
 // Icons
 import {
@@ -58,10 +57,6 @@ const Dashboard = () => {
       ${darkMode ? styles.dark : ''} 
       ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}
     >
-      <Helmet>
-        <title>Admin Dashboard - Mr. Utkarsh Gupta Portfolio</title>
-        <link rel="canonical" href="https://utkarshgupta.info/admin/dashboard" />
-      </Helmet>
       {/* Sidebar */}
       <motion.aside
         className={styles.sidebar}

@@ -124,7 +124,7 @@ This message was sent from your website contact form.
         Data: `Contact Form: ${subject}`,
       },
     },
-    Source: process.env.EMAIL_FROM || "verified-sender@example.com",
+    Source: process.env.EMAIL_FROM || "admin@mavicode.in",
     ReplyToAddresses: [email],
   };
 

@@ -682,7 +682,149 @@ useEffect(() => {
     }));
   };
 
-// Update the handleSubmit function
+// // Update the handleSubmit function
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   if (!formData.name || !formData.email) {
+//     alert("Name and Email are required");
+//     return;
+//   }
+
+//   setIsSaving(true);
+//   try {
+//     const fd = new FormData();
+
+//     // Handle profile image upload if changed
+//     if (avatarPreview && avatarPreview !== formData.profileImage) {
+//       if (avatarPreview.startsWith('data:')) {
+//         const blob = await fetch(avatarPreview).then(r => r.blob());
+//         fd.append('profileImage', blob, 'Utkarsh-profile.jpg');
+//       }
+//     }
+
+//     // Prepare the data structure to match your schema
+//     const preparedData = {
+//       name: formData.name,
+//       email: formData.email,
+//       professionalTitle: formData.professionalTitle || '',
+//       gender: formData.gender || '',
+//       dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : null,
+//       phoneNumber: formData.phoneNumber || '',
+//       alternateEmail: formData.alternateEmail || '',
+//       bio: formData.bio || '',
+//       socialMedia: formData.socialMedia || {},
+//       affiliation: {
+//         institution: formData.affiliation?.institution || '',
+//         department: formData.affiliation?.department || '',
+//         position: formData.affiliation?.position || '',
+//         faculty: formData.affiliation?.faculty || '',
+//         joiningDate: formData.affiliation?.joiningDate ? new Date(formData.affiliation.joiningDate).toISOString() : null,
+//         officeLocation: formData.affiliation?.officeLocation || '',
+//         officeHours: formData.affiliation?.officeHours || ''
+//       },
+//       location: {
+//         address: formData.location?.address || '',
+//         city: formData.location?.city || '',
+//         state: formData.location?.state || '',
+//         country: formData.location?.country || '',
+//         postalCode: formData.location?.postalCode || '',
+//         timeZone: formData.location?.timeZone || ''
+//       },
+//       notificationPreferences: {
+//         emailNotifications: formData.notificationPreferences?.emailNotifications !== false,
+//         pushNotifications: formData.notificationPreferences?.pushNotifications !== false
+//       },
+//       // Handle array fields with proper defaults
+//       education: formData.education?.map(edu => ({
+//         degree: edu.degree || '',
+//         field: edu.field || '',
+//         institution: edu.institution || '',
+//         grade: edu.grade || '',
+//         startdate: edu.startdate || '',
+//         enddate: edu.enddate || '',
+//         description: edu.description || ''
+//       })) || [],
+//       workExperience: formData.workExperience?.map(exp => ({
+//         position: exp.position || '',
+//         organization: exp.organization || '',
+//         startDate: exp.startDate ? new Date(exp.startDate).toISOString() : null,
+//         endDate: exp.endDate ? new Date(exp.endDate).toISOString() : null,
+//         current: exp.current || false,
+//         description: exp.description || ''
+//       })) || [],
+//       awards: formData.awards?.map(award => ({
+//         title: award.title || '',
+//         year: award.year || '',
+//         description: award.description || ''
+//       })) || [],
+//       researchInterests: formData.researchInterests || [],
+//       teachingInterests: formData.teachingInterests || [],
+//       skills: formData.skills || [],
+//       technicalSkills: formData.technicalSkills?.map(skill => ({
+//         name: skill.name || '',
+//         level: skill.level || 'intermediate'
+//       })) || [],
+//       languages: formData.languages?.map(lang => ({
+//         name: lang.name || '',
+//         proficiency: lang.proficiency || 'professional'
+//       })) || [],
+//       hobbies: formData.hobbies || [],
+//       certificates: formData.certificates?.map(cert => ({
+//         title: cert.title || '',
+//         organization: cert.organization || '',
+//         issueDate: cert.issueDate || '',
+//         certID: cert.certID || '',
+//         credentialslink: cert.credentialslink || ''
+//       })) || [],
+//       carouselItems: formData.carouselItems?.map(item => ({
+//         title: item.title || '',
+//         venue: item.venue || '',
+//         achievements: item.achievements || '',
+//         imageUrl: item.imageUrl || '',
+//         isActive: item.isActive !== false,
+//         order: item.order || 0
+//       })) || []
+//     };
+
+//     // Handle carousel image file uploads
+//     formData.carouselItems?.forEach((item, index) => {
+//       if (item.imageUrl instanceof File) {
+//         fd.append('carouselImage', item.imageUrl);
+//         preparedData.carouselItems[index].imageUrl = `/uploads/${item.imageUrl.name}`;
+//       }
+//     });
+
+//     // Append all fields to FormData
+//     Object.entries(preparedData).forEach(([key, value]) => {
+//       if (key === 'profileImage') return; // Already handled
+//       if (typeof value === 'object' && value !== null) {
+//         fd.append(key, JSON.stringify(value));
+//       } else if (value !== null && value !== undefined) {
+//         fd.append(key, value);
+//       }
+//     });
+
+//     const updatedUser = await authAPI.updateProfile("/auth/update-me", fd);
+//     const userObj = updatedUser.user || updatedUser.data?.user || updatedUser;
+
+//     updateUser(userObj);
+//     setFormData((prev) => ({ 
+//       ...prev, 
+//       ...userObj,
+//       profileImage: userObj.profileImage || prev.profileImage
+//     }));
+//     setEditMode(false);
+//     setAvatarPreview(null);
+
+//     alert("Profile updated successfully!");
+//   } catch (err) {
+//     console.error("Profile update error:", err);
+//     alert(err.message || "Failed to update profile");
+//   } finally {
+//     setIsSaving(false);
+//   }
+// };
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   if (!formData.name || !formData.email) {
@@ -698,12 +840,21 @@ const handleSubmit = async (e) => {
     if (avatarPreview && avatarPreview !== formData.profileImage) {
       if (avatarPreview.startsWith('data:')) {
         const blob = await fetch(avatarPreview).then(r => r.blob());
-        fd.append('profileImage', blob, 'Utkarsh-profile.jpg');
+        fd.append('profileImage', blob, 'profile.jpg');
       }
     }
 
-    // Prepare the data structure to match your schema
+    // Handle carousel image uploads
+    formData.carouselItems?.forEach((item, index) => {
+      if (item.imageUrl instanceof File) {
+        fd.append('carouselImages', item.imageUrl);
+        // Don't set the URL here - let the backend handle it
+      }
+    });
+
+    // Prepare the data structure
     const preparedData = {
+      
       name: formData.name,
       email: formData.email,
       professionalTitle: formData.professionalTitle || '',
@@ -776,23 +927,16 @@ const handleSubmit = async (e) => {
         certID: cert.certID || '',
         credentialslink: cert.credentialslink || ''
       })) || [],
+      // ... (keep all your existing preparedData code)
       carouselItems: formData.carouselItems?.map(item => ({
         title: item.title || '',
         venue: item.venue || '',
         achievements: item.achievements || '',
-        imageUrl: item.imageUrl || '',
+        imageUrl: item.imageUrl instanceof File ? '' : item.imageUrl || '', // Handle file case
         isActive: item.isActive !== false,
         order: item.order || 0
       })) || []
     };
-
-    // Handle carousel image file uploads
-    formData.carouselItems?.forEach((item, index) => {
-      if (item.imageUrl instanceof File) {
-        fd.append('carouselImage', item.imageUrl);
-        preparedData.carouselItems[index].imageUrl = `/uploads/${item.imageUrl.name}`;
-      }
-    });
 
     // Append all fields to FormData
     Object.entries(preparedData).forEach(([key, value]) => {
@@ -811,7 +955,8 @@ const handleSubmit = async (e) => {
     setFormData((prev) => ({ 
       ...prev, 
       ...userObj,
-      profileImage: userObj.profileImage || prev.profileImage
+      profileImage: userObj.profileImage || prev.profileImage,
+      carouselItems: userObj.carouselItems || prev.carouselItems
     }));
     setEditMode(false);
     setAvatarPreview(null);
@@ -824,8 +969,6 @@ const handleSubmit = async (e) => {
     setIsSaving(false);
   }
 };
-
-
 
 
   const validateForm = () => {

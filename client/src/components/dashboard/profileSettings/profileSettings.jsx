@@ -70,16 +70,16 @@ const ProfileSettings = () => {
     return formDataToSend;
   };
   // Add this useEffect to clean up object URLs
-useEffect(() => {
-  return () => {
-    // Clean up any object URLs when component unmounts
-    formData.carouselItems?.forEach(item => {
-      if (item.imagePreview) {
-        URL.revokeObjectURL(item.imagePreview);
-      }
-    });
-  };
-}, []);
+  useEffect(() => {
+    return () => {
+      // Clean up any object URLs when component unmounts
+      formData.carouselItems?.forEach(item => {
+        if (item.imagePreview) {
+          URL.revokeObjectURL(item.imagePreview);
+        }
+      });
+    };
+  }, []);
   // Form data state
   const [formData, setFormData] = useState({
     name: "",
@@ -895,8 +895,7 @@ const handleSubmit = async (e) => {
     // Handle carousel image uploads
     formData.carouselItems?.forEach((item, index) => {
       if (item.imageUrl instanceof File) {
-        fd.append('carouselImages', item.imageUrl);
-        // Don't set the URL here - let the backend handle it
+        fd.append('carousel', item.imageUrl); // ← Change to 'carousel'
       }
     });
 

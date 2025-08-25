@@ -47,7 +47,7 @@ app.post('/api/contact/send-contact-email', async (req, res) => {
   
   // Configure SES with proper credentials
   const ses = new SESClient({
-    region: process.env.AWS_REGION,
+    region: process.env.AWS_SES_REGION,
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,

@@ -1,19 +1,23 @@
 // utils/email.js
 const nodemailer = require('nodemailer');
+const { SESClient } = require('@aws-sdk/client-ses');
 
+// 1) Configure AWS SES client
+const ses = new SESClient({
+  region: process.env.AWS_REGION, // e.g. "ap-south-1"
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+// 2) Create Nodemailer SES transporter
+const transporter = nodemailer.createTransport({
+  SES: { ses, aws: require('@aws-sdk/client-ses') },
+});
+
+// 3) Send Email function
 const sendEmail = async (options) => {
-  // 1) Create transporter
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",          // e.g. smtp.gmail.com
-    port: 465,          // 465 (secure) or 587 (non-secure)
-    secure: true, // true for port 465, false for others
-    auth: {
-      user: process.env.EMAIL_USERNAME,    // your email
-      pass: process.env.EMAIL_PASSWORD,    // your email password or app password
-    },
-  });
-
-  // 2) Define email options
   const mailOptions = {
     from: `"${process.env.EMAIL_FROM_NAME || 'Admin'}" <${process.env.EMAIL_FROM}>`,
     to: options.email,
@@ -22,7 +26,6 @@ const sendEmail = async (options) => {
     html: options.html || `<p>${options.message}</p>`,
   };
 
-  // 3) Send email
   await transporter.sendMail(mailOptions);
 };
 
@@ -37,9 +40,9 @@ module.exports = sendEmail;
 // const sendEmail = async (options) => {
 //   // 1) Create transporter
 //   const transporter = nodemailer.createTransport({
-//     host: process.env.EMAIL_HOST,          // e.g. smtp.gmail.com
-//     port: process.env.EMAIL_PORT,          // 465 (secure) or 587 (non-secure)
-//     secure: process.env.EMAIL_SECURE === 'true', // true for port 465, false for others
+//     host: "smtp.gmail.com",          // e.g. smtp.gmail.com
+//     port: 465,          // 465 (secure) or 587 (non-secure)
+//     secure: true, // true for port 465, false for others
 //     auth: {
 //       user: process.env.EMAIL_USERNAME,    // your email
 //       pass: process.env.EMAIL_PASSWORD,    // your email password or app password
@@ -60,3 +63,36 @@ module.exports = sendEmail;
 // };
 
 // module.exports = sendEmail;
+
+
+
+
+// // // utils/email.js
+// // const nodemailer = require('nodemailer');
+
+// // const sendEmail = async (options) => {
+// //   // 1) Create transporter
+// //   const transporter = nodemailer.createTransport({
+// //     host: process.env.EMAIL_HOST,          // e.g. smtp.gmail.com
+// //     port: process.env.EMAIL_PORT,          // 465 (secure) or 587 (non-secure)
+// //     secure: process.env.EMAIL_SECURE === 'true', // true for port 465, false for others
+// //     auth: {
+// //       user: process.env.EMAIL_USERNAME,    // your email
+// //       pass: process.env.EMAIL_PASSWORD,    // your email password or app password
+// //     },
+// //   });
+
+// //   // 2) Define email options
+// //   const mailOptions = {
+// //     from: `"${process.env.EMAIL_FROM_NAME || 'Admin'}" <${process.env.EMAIL_FROM}>`,
+// //     to: options.email,
+// //     subject: options.subject,
+// //     text: options.message,
+// //     html: options.html || `<p>${options.message}</p>`,
+// //   };
+
+// //   // 3) Send email
+// //   await transporter.sendMail(mailOptions);
+// // };
+
+// // module.exports = sendEmail;

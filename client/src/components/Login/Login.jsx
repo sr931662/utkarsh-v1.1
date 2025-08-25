@@ -78,12 +78,6 @@ const Login = () => {
   setLoading(true);
   clearMessages();
 
-  console.log("🔹 Reset password started");
-  console.log("Email:", forgotPasswordEmail);
-  console.log("OTP:", otp);
-  console.log("New Password:", newPassword);
-  console.log("Confirm Password:", confirmPassword);
-
   if (newPassword !== confirmPassword) {
     console.warn("⚠️ Passwords do not match");
     setErrors('Passwords do not match.');
@@ -92,7 +86,6 @@ const Login = () => {
   }
 
   try {
-    console.log("📤 Sending request to reset password...");
     axios.post('https://utkarsh-x6xa.onrender.com/api/auth/verify-otp-reset', {
       email: forgotPasswordEmail,
       otp,

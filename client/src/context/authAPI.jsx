@@ -64,14 +64,30 @@ export const authAPI = {
       );
     }
   },
-  // In your authAPI.js or equivalent
+  // authAPI.jsx - Update the sendContactEmail method
   sendContactEmail: async (formData) => {
     try {
-      const { data } = await api.post('/auth/contact', formData); 
-      return { success: true, data };
+      const { data } = await api.post('/contact/contact', formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000 // 10 second timeout
+      });
+      
+      return { 
+        success: true, 
+        data,
+        message: data.message || 'Message sent successfully!'
+      };
     } catch (error) {
       console.error('Contact email failed:', error);
-      throw new Error(error.response?.data?.error || 'Failed to send contact email');
+      
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          error.message || 
+                          'Failed to send message. Please try again later.';
+      
+      throw new Error(errorMessage);
     }
   },
 

@@ -36,11 +36,14 @@ router.post('/contact', authController.sendContactEmail); // If kept
 router.use(authController.protect);
 
 router.get('/me', authController.getMe);
-router.patch('/update-me', 
+// Use the correct upload middleware
+router.patch(
+  '/update-me',
+  authController.protect,
   upload.fields([
     { name: 'profileImage', maxCount: 1 },
-    { name: 'carouselImage', maxCount: 1 }
-  ]), 
+    { name: 'carousel', maxCount: 10 }
+  ]),
   authController.updateMe
 );
 // router.patch('/update-me', upload.single('profileImage'), authController.updateMe);

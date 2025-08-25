@@ -452,16 +452,6 @@ useEffect(() => {
     return isNaN(date.getTime()) ? null : date.toISOString();
   };
 
-//   // Helper function to convert ISO date to yyyy-MM-dd format
-// const formatDateForInput = (isoDate) => {
-//   if (!isoDate || isNaN(new Date(isoDate).getTime())) return '';
-//   // if (!isoDate) return '';
-//   const date = new Date(isoDate);
-//   const year = date.getFullYear();
-//   const month = String(date.getMonth() + 1).padStart(2, '0');
-//   const day = String(date.getDate()).padStart(2, '0');
-//   return `${year}-${month}-${day}`;
-// };
   // Helper function to convert yyyy-MM-dd to ISO format
   const parseInputDateToISO = (inputDate) => {
     if (!inputDate) return null;
@@ -837,143 +827,6 @@ const handleSubmit = async (e) => {
 
 
 
-// const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!formData.name || !formData.email) {
-//       alert("Name and Email are required");
-//       return;
-//     }
-
-//     setIsSaving(true);
-//     try {
-//       const fd = new FormData();
-
-//       // Profile image
-//       if (formData.profileImage instanceof File) {
-//         fd.append("profileImage", formData.profileImage);
-//       }
-
-//       // Append rest of fields
-//       const fields = {
-//         ...formData,
-//         dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : null,
-//         affiliation: { ...formData.affiliation, joiningDate: formData.affiliation.joiningDate ? new Date(formData.affiliation.joiningDate).toISOString() : null }
-//       };
-
-//       Object.entries(fields).forEach(([key, value]) => {
-//         if (typeof value === "object") fd.append(key, JSON.stringify(value));
-//         else if (value !== null) fd.append(key, value);
-//       });
-
-//       const updatedUser = await authAPI.updateProfile("/auth/update-me", fd);
-//       const userObj = updatedUser.user || updatedUser.data?.user || updatedUser;
-
-//       updateUser(userObj);
-//       setFormData((prev) => ({ ...prev, ...userObj }));
-//       setEditMode(false);
-//       setAvatarPreview(null);
-
-//       alert("Profile updated successfully!");
-//     } catch (err) {
-//       console.error("Profile update error:", err);
-//       alert(err.message || "Failed to update profile");
-//     } finally {
-//       setIsSaving(false);
-//     }
-//   };
-
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-  
-//   if (!validateForm()) return;
-  
-//   setIsSaving(true);
-  
-//   try {
-//     // Prepare form data for submission
-//     const formDataToSend = new FormData();
-    
-//     // Handle profile image if changed
-//     if (avatarPreview && avatarPreview !== formData.profileImage) {
-//       if (avatarPreview.startsWith('data:')) {
-//         // Convert base64 to blob if needed
-//         const blob = await fetch(avatarPreview).then(r => r.blob());
-//         formDataToSend.append('profileImage', blob, 'profile.jpg');
-//       } else {
-//         formDataToSend.append('profileImage', avatarPreview);
-//       }
-//     }
-    
-//     // Add all other fields
-//     const fieldsToUpdate = {
-//       name: formData.name,
-//       email: formData.email,
-//       professionalTitle: formData.professionalTitle,
-//       gender: formData.gender,
-//       dateOfBirth: formData.dateOfBirth ? new Date(formData.dateOfBirth).toISOString() : null,
-//       phoneNumber: formData.phoneNumber,
-//       alternateEmail: formData.alternateEmail,
-//       bio: formData.bio,
-//       socialMedia: JSON.stringify(formData.socialMedia),
-//       affiliation: JSON.stringify({
-//         ...formData.affiliation,
-//         joiningDate: formData.affiliation.joiningDate 
-//           ? new Date(formData.affiliation.joiningDate).toISOString()
-//           : null
-//       }),
-//       location: JSON.stringify(formData.location),
-//       education: JSON.stringify(formData.education),
-//       crashcourses: JSON.stringify(formData.crashcourses),
-//       workExperience: JSON.stringify(formData.workExperience),
-//       awards: JSON.stringify(formData.awards),
-//       researchInterests: JSON.stringify(formData.researchInterests),
-//       teachingInterests: JSON.stringify(formData.teachingInterests),
-//       skills: JSON.stringify(formData.skills),
-//       technicalSkills: JSON.stringify(formData.technicalSkills),
-//       languages: JSON.stringify(formData.languages),
-//       hobbies: JSON.stringify(formData.hobbies),
-//       certificates: JSON.stringify(formData.certificates),
-//       notificationPreferences: JSON.stringify(formData.notificationPreferences)
-//     };
-    
-//     // Append all fields to formData
-//     Object.entries(fieldsToUpdate).forEach(([key, value]) => {
-//       if (value !== null && value !== undefined) {
-//         formDataToSend.append(key, value);
-//       }
-//     });
-    
-//     // Update profile
-//     const updatedUser = await authAPI.updateProfile('/auth/update-me', formDataToSend);
-    
-//     // Update carousel separately if user is superadmin
-//     if (user?.role === 'superadmin' && formData.carouselItems) {
-//       await authAPI.updateCarousel(formData.carouselItems);
-//     }
-    
-//     // Update context and state
-//     if (updateUser) {
-//       updateUser(updatedUser.user || updatedUser);
-//     }
-    
-//     setFormData(prev => ({
-//       ...prev,
-//       ...updatedUser.user || updatedUser,
-//       profileImage: updatedUser.user?.profileImage || updatedUser.profileImage || prev.profileImage
-//     }));
-    
-//     setEditMode(false);
-//     setAvatarPreview(null);
-    
-//     alert('Profile updated successfully!');
-//   } catch (error) {
-//     console.error('Profile update error:', error);
-//     alert(error.message || 'Failed to update profile. Please try again.');
-//   } finally {
-//     setIsSaving(false);
-//   }
-// };
-
 
   const validateForm = () => {
     if (!formData.name || !formData.email) {
@@ -1007,27 +860,6 @@ const handleSubmit = async (e) => {
               user?.name?.charAt(0)?.toUpperCase() || 'A'
             )}
           </div>
-          {/* <div className={styles.userAvatarLarge} style={
-            avatarPreview 
-              ? { backgroundImage: `url(${avatarPreview})` }
-              : formData.profileImage 
-                ? { 
-                    backgroundImage: `url(${
-                      formData.profileImage.startsWith('http') 
-                        ? formData.profileImage 
-                        : `http://localhost:5000${formData.profileImage}?${Date.now()}`
-                    })` 
-                  }
-                : {}
-          }>
-            {!avatarPreview && !formData.profileImage && (formData.name?.charAt(0)?.toUpperCase() || 'A')}
-          </div> */}
-          {/* <div className={styles.userAvatarLarge} style={
-            avatarPreview ? { backgroundImage: `url(${avatarPreview})` } :
-            formData.profileImage ? { backgroundImage: `url(${formData.profileImage})` } : {}
-          }>
-            {!avatarPreview && !formData.profileImage && (formData.name?.charAt(0)?.toUpperCase() || 'A')}
-          </div> */}
           {editMode && (
             <motion.label
               className={styles.avatarEdit}
@@ -1109,13 +941,6 @@ const handleSubmit = async (e) => {
           }}
           disabled={!editMode}
         />
-        {/* <input
-          type="date"
-          name="dateOfBirth"
-          value={formData.dateOfBirth}
-          onChange={handleInputChange}
-          disabled={!editMode}
-        /> */}
       </div>
 
       <div className={styles.formGroup}>
@@ -1217,13 +1042,6 @@ const handleSubmit = async (e) => {
             }}
             disabled={!editMode}
           />
-        {/* <input
-          type="date"
-          name="joiningDate"
-          value={formData.affiliation.joiningDate}
-          onChange={handleAffiliationChange}
-          disabled={!editMode}
-        /> */}
       </div>
 
       <div className={styles.formGroup}>
@@ -1386,91 +1204,6 @@ const renderCarouselSettings = () => (
     </button>
   </div>
 );
-
-//   const renderCarouselSettings = () => (
-//   <div className={styles.sectionContent}>
-//     <h3>Carousel Management</h3>
-//     <div className={styles.carouselItemsContainer}>
-//       {formData.carouselItems.map((item, index) => (
-//         <div key={index} className={`${styles.carouselItem} ${!item.isActive ? styles.inactive : ''}`}>
-//           <div className={styles.carouselItemControls}>
-//             <button onClick={() => moveCarouselItem(index, 'up')} disabled={index === 0}>
-//               <FiChevronUp />
-//             </button>
-//             <button onClick={() => moveCarouselItem(index, 'down')} disabled={index === formData.carouselItems.length - 1}>
-//               <FiChevronDown />
-//             </button>
-//             <button onClick={() => toggleCarouselItemActive(index)}>
-//               {item.isActive ? <FiToggleRight /> : <FiToggleLeft />}
-//             </button>
-//             <button onClick={() => removeCarouselItem(index)}>
-//               <FiTrash2 />
-//             </button>
-//           </div>
-//           <div className={styles.carouselItemContent}>
-//             // Update the carousel image input in renderCarouselSettings
-//             <div className={styles.formGroup}>
-//               <label>Image</label>
-//               <input
-//                 type="file"
-//                 accept="image/*"
-//                 onChange={(e) => {
-//                   if (e.target.files && e.target.files[0]) {
-//                     handleCarouselItemChange(index, 'imageUrl', e.target.files[0]);
-//                   }
-//                 }}
-//               />
-//               {item.imageUrl && (
-//                 <div className={styles.imagePreview}>
-//                   <img className={styles.previewCarousel}
-//                     src={
-//                       item.imageUrl instanceof File 
-//                         ? URL.createObjectURL(item.imageUrl) 
-//                         : item.imageUrl.startsWith('http') 
-//                           ? item.imageUrl 
-//                           : `http://localhost:5000${item.imageUrl}`
-//                     } 
-//                     alt="Preview" 
-//                   />
-//                 </div>
-//               )}
-//             </div>
-//             <div className={styles.formGroup}>
-//               <label>Title</label>
-//               <input
-//                 type="text"
-//                 value={item.title}
-//                 onChange={(e) => handleCarouselItemChange(index, 'title', e.target.value)}
-//                 placeholder="Event title"
-//               />
-//             </div>
-//             <div className={styles.formGroup}>
-//               <label>Venue</label>
-//               <input
-//                 type="text"
-//                 value={item.venue}
-//                 onChange={(e) => handleCarouselItemChange(index, 'venue', e.target.value)}
-//                 placeholder="Event location"
-//               />
-//             </div>
-//             <div className={styles.formGroup}>
-//               <label>Achievements</label>
-//               <textarea
-//                 value={item.achievements}
-//                 onChange={(e) => handleCarouselItemChange(index, 'achievements', e.target.value)}
-//                 placeholder="List of achievements"
-//                 rows={3}
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//     <button type="button" onClick={addCarouselItem} className={styles.addButton}>
-//       <FiPlus /> Add Carousel Item
-//     </button>
-//   </div>
-// );
 
 
 

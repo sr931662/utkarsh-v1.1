@@ -1297,16 +1297,15 @@ const renderCarouselSettings = () => (
           <div className={styles.itemContent}>
             <div className={styles.imageUpload}>
               <div className={styles.uploadArea}>
-                {item.imageUrl ? (
+                {item.imageUrl || item.imagePreview ? (
                   <div className={styles.imagePreviewContainer}>
                     <img 
                       className={styles.previewImage}
                       src={
-                        item.imageUrl instanceof File 
-                          ? URL.createObjectURL(item.imageUrl) 
-                          : item.imageUrl.startsWith('http') 
-                            ? item.imageUrl 
-                            : `https://utkarsh-x6xa.onrender.com${item.imageUrl}`
+                        item.imagePreview || 
+                        (item.imageUrl instanceof File ? URL.createObjectURL(item.imageUrl) : 
+                        item.imageUrl.startsWith('http') ? item.imageUrl : 
+                        `https://utkarsh-x6xa.onrender.com${item.imageUrl}`)
                       } 
                       alt="Preview" 
                     />

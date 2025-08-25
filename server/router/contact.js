@@ -1,22 +1,46 @@
-// routes/contact.js
-const express = require('express');
-const router = express.Router();
-const { sendContactEmail } = require('../utils/aws-ses'); // adjust path
+// contact.js
+import express from "express";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
-router.post('/api/contact', async (req, res) => {
-  const { name, email, phone, organization, subject, message } = req.body;
+const router = express.Router();
+
+const ses = new SESClient({ region: process.env.AWS_REGION });
+
+router.post("/contact", async (req, res) => {
+  const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: "All fields are required" });
   }
 
+  const params = {
+    Destination: {
+      ToAddresses: ["sr931662@gmail.com"], // <-- Your email
+    },
+    Message: {
+      Body: {
+        Text: {
+          Charset: "UTF-8",
+          Data: `You got a new message from ${name} (${email}):\n\n${message}`,
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: `New Contact Form Submission from ${name}`,
+      },
+    },
+    Source: "verified-sender@example.com", // must be verified in SES
+    ReplyToAddresses: [email],
+  };
+
   try {
-    await sendContactEmail({ name, email, phone, organization, subject, message });
-    res.status(200).json({ message: 'Email sent successfully' });
-  } catch (error) {
-    console.error('Error sending contact email:', error);
-    res.status(500).json({ error: 'Error sending email' });
+    const command = new SendEmailCommand(params);
+    await ses.send(command);
+    res.json({ status: "success", message: "Message sent successfully!" });
+  } catch (err) {
+    console.error("SES Error:", err);
+    res.status(500).json({ status: "error", message: "Error sending email", error: err.message });
   }
 });
 
-module.exports = router;
+export default router;

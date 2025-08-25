@@ -3,6 +3,31 @@ import { useTheme } from '../../../context/ThemeContext';
 import { useAuth } from '../../../context/authContext';
 import { motion } from 'framer-motion';
 import styles from './profileSettings.module.css';
+const handleCarouselItemChange = (index, field, value) => {
+  setFormData(prev => {
+    const updatedItems = [...prev.carouselItems];
+    
+    if (field === 'imageUrl' && value instanceof File) {
+      // Create a preview URL for the file
+      const previewUrl = URL.createObjectURL(value);
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: value,
+        imagePreview: previewUrl // Store preview separately
+      };
+    } else {
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: value
+      };
+    }
+    
+    return {
+      ...prev,
+      carouselItems: updatedItems
+    };
+  });
+};
 import { authAPI } from '../../../context/authAPI';
 import { 
   FiUser, FiMail, FiSave, FiEdit, FiCamera,
@@ -116,10 +141,22 @@ useEffect(() => {
 const handleCarouselItemChange = (index, field, value) => {
   setFormData(prev => {
     const updatedItems = [...prev.carouselItems];
-    updatedItems[index] = {
-      ...updatedItems[index],
-      [field]: value
-    };
+    
+    if (field === 'imageUrl' && value instanceof File) {
+      // Create a preview URL for the file
+      const previewUrl = URL.createObjectURL(value);
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: value,
+        imagePreview: previewUrl // Store preview separately
+      };
+    } else {
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: value
+      };
+    }
+    
     return {
       ...prev,
       carouselItems: updatedItems

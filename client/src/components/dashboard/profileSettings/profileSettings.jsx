@@ -69,6 +69,17 @@ const ProfileSettings = () => {
 
     return formDataToSend;
   };
+  // Add this useEffect to clean up object URLs
+useEffect(() => {
+  return () => {
+    // Clean up any object URLs when component unmounts
+    formData.carouselItems?.forEach(item => {
+      if (item.imagePreview) {
+        URL.revokeObjectURL(item.imagePreview);
+      }
+    });
+  };
+}, []);
   // Form data state
   const [formData, setFormData] = useState({
     name: "",

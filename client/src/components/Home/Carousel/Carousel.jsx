@@ -111,7 +111,7 @@ const Carousel = ({ carouselItems = [] }) => {
                 <div className={styles.imageContainer}>
                   <div className={styles.imageOverlay}></div>
                   <img 
-                    src={activeItems[currentIndex].imageUrl || 'https://via.placeholder.com/800x500?text=Professional+Engagement'}
+                    src={getImageUrl(activeItems[currentIndex].imageUrl)}
                     alt={activeItems[currentIndex].title}
                     className={styles.image}
                     onError={(e) => {

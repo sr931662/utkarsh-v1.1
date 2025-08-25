@@ -1,6 +1,6 @@
-// contact.js
-import express from "express";
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+// server/router/contact.js (CommonJS version)
+const express = require("express");
+const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
 
 const router = express.Router();
 

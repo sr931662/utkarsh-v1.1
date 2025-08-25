@@ -1,12 +1,13 @@
+// server.js - Add these changes
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./db/dbConnect');
 const authRouter = require('./router/auth-router');
-const pubRouter = require('./router/pub-router'); // Add publications router
+const pubRouter = require('./router/pub-router');
+const contactRouter = require('./router/contact'); // Add this import
 const path = require('path');
-const morgan = require('morgan'); // For request logging
-// const otpRoutes = require('./router/otp-router');
+const morgan = require('morgan');
 
 // Initialize app
 const app = express();
@@ -15,9 +16,9 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(morgan('dev')); // Log requests to console
+app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(express.json({ limit: '10mb' })); // Increased limit for file uploads
+app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
@@ -28,9 +29,9 @@ app.use(
     credentials: true,
   })
 );
-// Serve static files (for uploaded publications)
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Serve static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.get('/', (req, res) => {
@@ -39,9 +40,9 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/auth', authRouter);
-app.use('/api/publications', pubRouter); // Add publications routes
-app.use('/api/contact', authRouter);
-// app.use('/api/auth/otp', otpRoutes);
+app.use('/api/publications', pubRouter);
+app.use('/api/contact', contactRouter); // Add this line for contact routes
+
 // 404 Handler
 app.use('*', (req, res) => {
   res.status(404).json({
@@ -61,14 +62,14 @@ app.get('*', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack); // Log error stack trace
+  console.error(err.stack);
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
   res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }) // Show stack in development
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
 

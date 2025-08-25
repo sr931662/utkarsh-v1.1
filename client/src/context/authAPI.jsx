@@ -65,15 +65,15 @@ export const authAPI = {
     }
   },
   // In your authAPI.js or equivalent
-sendContactEmail: async (formData) => {
-  try {
-    const { data } = await api.post('/api/contact', formData); 
-    return { success: true, data };
-  } catch (error) {
-    console.error('Contact email failed:', error);
-    throw new Error(error.response?.data?.error || 'Failed to send contact email');
-  }
-},
+  sendContactEmail: async (formData) => {
+    try {
+      const { data } = await api.post('/contact', formData); 
+      return { success: true, data };
+    } catch (error) {
+      console.error('Contact email failed:', error);
+      throw new Error(error.response?.data?.error || 'Failed to send contact email');
+    }
+  },
 
 
   getPublicContactInfo: async () => {

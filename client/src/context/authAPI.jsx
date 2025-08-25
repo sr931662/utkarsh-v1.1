@@ -67,7 +67,7 @@ export const authAPI = {
   // In your authAPI.js or equivalent
   sendContactEmail: async (formData) => {
     try {
-      const { data } = await api.post('/contact', formData); 
+      const { data } = await api.post('/auth/contact', formData); 
       return { success: true, data };
     } catch (error) {
       console.error('Contact email failed:', error);

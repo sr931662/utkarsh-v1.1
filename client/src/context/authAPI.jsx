@@ -67,7 +67,7 @@ export const authAPI = {
   // authAPI.jsx - Update the sendContactEmail method
   sendContactEmail: async (formData) => {
     try {
-      const { data } = await api.post('/contact/contact', formData, {
+      const { data } = await api.post('/auth/contact', formData, {
         headers: {
           'Content-Type': 'application/json',
         },

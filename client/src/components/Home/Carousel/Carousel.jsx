@@ -25,7 +25,23 @@ const Carousel = ({ carouselItems = [] }) => {
 
     return () => clearInterval(interval);
   }, [activeItems.length, isHovered]);
-
+// Add this helper function to properly construct image URLs
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return 'https://via.placeholder.com/800x500?text=Professional+Engagement';
+    
+    // If it's a full URL, return as is
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // If it's a relative path, prepend the base URL
+    if (imageUrl.startsWith('/')) {
+      return `https://utkarsh-x6xa.onrender.com${imageUrl}`;
+    }
+    
+    // For uploaded files, use the uploads directory
+    return `https://utkarsh-x6xa.onrender.com/uploads/${imageUrl}`;
+  };
   const handlePrev = () => {
     setDirection(-1);
     setCurrentIndex(prev => (prev === 0 ? activeItems.length - 1 : prev - 1));

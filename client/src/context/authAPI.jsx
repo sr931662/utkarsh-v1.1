@@ -64,32 +64,32 @@ export const authAPI = {
       );
     }
   },
-  // authAPI.jsx - Update the sendContactEmail method
-  sendContactEmail: async (formData) => {
-    try {
-      const { data } = await api.post('/auth/contact', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000 // 10 second timeout
-      });
-      
-      return { 
-        success: true, 
-        data,
-        message: data.message || 'Message sent successfully!'
-      };
-    } catch (error) {
-      console.error('Contact email failed:', error);
-      
-      const errorMessage = error.response?.data?.error || 
-                          error.response?.data?.message || 
-                          error.message || 
-                          'Failed to send message. Please try again later.';
-      
-      throw new Error(errorMessage);
-    }
-  },
+  // client/src/context/authAPI.jsx - Update the sendContactEmail method
+sendContactEmail: async (formData) => {
+  try {
+    const { data } = await api.post('/contact/send-contact-email', formData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      timeout: 10000 // 10 second timeout
+    });
+    
+    return { 
+      success: true, 
+      data,
+      message: data.message || 'Message sent successfully!'
+    };
+  } catch (error) {
+    console.error('Contact email failed:', error);
+    
+    const errorMessage = error.response?.data?.error || 
+                        error.response?.data?.message || 
+                        error.message || 
+                        'Failed to send message. Please try again later.';
+    
+    throw new Error(errorMessage);
+  }
+},
 
 
   getPublicContactInfo: async () => {

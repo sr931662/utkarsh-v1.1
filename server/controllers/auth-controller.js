@@ -358,10 +358,13 @@ exports.getMe = async (req, res, next) => {
   }
 };
 
+
+// auth-controller.js - Update updateMe function
 exports.updateMe = async (req, res, next) => {
   try {
-    console.log('Received update request with:', req.body, req.file);
-    // ... rest of the function
+    console.log('Received update request with files:', req.files);
+    console.log('Received update request with body:', req.body);
+
     // 1) Prevent password updates here
     if (req.body.password || req.body.passwordConfirm) {
       return next(new AppError('This route is not for password updates. Please use /update-password.', 400));
@@ -369,13 +372,19 @@ exports.updateMe = async (req, res, next) => {
 
     // 2) Handle file uploads
     const fileFields = {};
-    if (req.file) {
-      // Determine which type of file was uploaded
-      if (req.file.fieldname === 'profileImage') {
-        fileFields.profileImage = `/uploads/${req.file.filename}`;
-      } else if (req.file.fieldname === 'carouselImage') {
-        // This will be handled in the carouselItems processing
-      }
+    
+    // Handle profile image
+    if (req.files && req.files['profileImage']) {
+      const profileImage = req.files['profileImage'][0];
+      fileFields.profileImage = `/uploads/${profileImage.filename}`;
+    }
+
+    // Handle carousel images
+    let carouselImageMap = {};
+    if (req.files && req.files['carousel']) {
+      req.files['carousel'].forEach((file, index) => {
+        carouselImageMap[index] = `/uploads/${file.filename}`;
+      });
     }
 
     // 3) Parse JSON fields
@@ -383,6 +392,7 @@ exports.updateMe = async (req, res, next) => {
       try {
         return typeof field === 'string' ? JSON.parse(field) : field;
       } catch (err) {
+        console.log(`Failed to parse field: ${field}`);
         return field;
       }
     };
@@ -408,18 +418,30 @@ exports.updateMe = async (req, res, next) => {
       carouselItems: parseJSONField(req.body.carouselItems)
     };
 
-    // 5) Process carousel items if they exist
+    // 5) Process carousel items - update image URLs for uploaded files
     if (filteredBody.carouselItems && Array.isArray(filteredBody.carouselItems)) {
-      filteredBody.carouselItems = filteredBody.carouselItems.map(item => ({
-        ...item,
-        // If we have a new carousel image file, update the URL
-        imageUrl: req.file?.fieldname === 'carouselImage' 
-          ? `/uploads/${req.file.filename}` 
-          : item.imageUrl
-      }));
+      filteredBody.carouselItems = filteredBody.carouselItems.map((item, index) => {
+        // If we have a new carousel image for this index, update the URL
+        if (carouselImageMap[index]) {
+          return {
+            ...item,
+            imageUrl: carouselImageMap[index]
+          };
+        }
+        return item;
+      });
     }
 
-    // 6) Update user document
+    // 6) Clean up undefined fields
+    Object.keys(filteredBody).forEach(key => {
+      if (filteredBody[key] === undefined) {
+        delete filteredBody[key];
+      }
+    });
+
+    console.log('Final update data:', filteredBody);
+
+    // 7) Update user document
     const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
       new: true,
       runValidators: true
@@ -432,9 +454,89 @@ exports.updateMe = async (req, res, next) => {
       }
     });
   } catch (err) {
+    console.error('Update error:', err);
     next(err);
   }
 };
+
+
+// exports.updateMe = async (req, res, next) => {
+//   try {
+//     console.log('Received update request with:', req.body, req.file);
+//     // ... rest of the function
+//     // 1) Prevent password updates here
+//     if (req.body.password || req.body.passwordConfirm) {
+//       return next(new AppError('This route is not for password updates. Please use /update-password.', 400));
+//     }
+
+//     // 2) Handle file uploads
+//     const fileFields = {};
+//     if (req.file) {
+//       // Determine which type of file was uploaded
+//       if (req.file.fieldname === 'profileImage') {
+//         fileFields.profileImage = `/uploads/${req.file.filename}`;
+//       } else if (req.file.fieldname === 'carouselImage') {
+//         // This will be handled in the carouselItems processing
+//       }
+//     }
+
+//     // 3) Parse JSON fields
+//     const parseJSONField = (field) => {
+//       try {
+//         return typeof field === 'string' ? JSON.parse(field) : field;
+//       } catch (err) {
+//         return field;
+//       }
+//     };
+    
+//     // 4) Filter and prepare update data
+//     const filteredBody = {
+//       ...req.body,
+//       ...fileFields,
+//       socialMedia: parseJSONField(req.body.socialMedia),
+//       affiliation: parseJSONField(req.body.affiliation),
+//       location: parseJSONField(req.body.location),
+//       education: parseJSONField(req.body.education),
+//       workExperience: parseJSONField(req.body.workExperience),
+//       awards: parseJSONField(req.body.awards),
+//       researchInterests: parseJSONField(req.body.researchInterests),
+//       teachingInterests: parseJSONField(req.body.teachingInterests),
+//       skills: parseJSONField(req.body.skills),
+//       technicalSkills: parseJSONField(req.body.technicalSkills),
+//       languages: parseJSONField(req.body.languages),
+//       hobbies: parseJSONField(req.body.hobbies),
+//       certificates: parseJSONField(req.body.certificates),
+//       notificationPreferences: parseJSONField(req.body.notificationPreferences),
+//       carouselItems: parseJSONField(req.body.carouselItems)
+//     };
+
+//     // 5) Process carousel items if they exist
+//     if (filteredBody.carouselItems && Array.isArray(filteredBody.carouselItems)) {
+//       filteredBody.carouselItems = filteredBody.carouselItems.map(item => ({
+//         ...item,
+//         // If we have a new carousel image file, update the URL
+//         imageUrl: req.file?.fieldname === 'carouselImage' 
+//           ? `/uploads/${req.file.filename}` 
+//           : item.imageUrl
+//       }));
+//     }
+
+//     // 6) Update user document
+//     const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+//       new: true,
+//       runValidators: true
+//     });
+
+//     res.status(200).json({
+//       status: 'success',
+//       data: {
+//         user: updatedUser
+//       }
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // exports.updateMe = async (req, res, next) => {
 //   try {

@@ -13,7 +13,7 @@ const ses = new SESClient({
   },
 });
 
-router.post("/auth/contact", async (req, res) => {
+router.post("/send-contact-email", async (req, res) => {
   const { name, email, phone, organization, subject, message } = req.body;
 
   // Validation

@@ -166,20 +166,6 @@ const handleLogout = async () => {
                         </span>
                       </div>
                     </div>
-                    <Link 
-                      to="/admin/profile" 
-                      className={dropdownItemClasses}
-                      onClick={() => setUserDropdownOpen(false)}
-                    >
-                      Profile
-                    </Link>
-                    <Link 
-                      to="/admin/settings" 
-                      className={dropdownItemClasses}
-                      onClick={() => setUserDropdownOpen(false)}
-                    >
-                      Account Settings
-                    </Link>
                     <button 
                       className={dropdownItemClasses}
                       onClick={handleLogout}

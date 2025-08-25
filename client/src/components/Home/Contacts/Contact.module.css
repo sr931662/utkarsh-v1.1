@@ -745,5 +745,24 @@
   z-index: 1;
   transition: background-color 0.8s ease;
 }
+.errorContainer, .successContainer {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
 
+.errorContainer {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.successContainer {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.errorHint, .successHint {
+  margin-top: 8px;
+  font-style: italic;
+}
 /* Rest of your existing styles... */

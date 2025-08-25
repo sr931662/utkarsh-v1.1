@@ -316,16 +316,29 @@ const handleSubmit = async (e) => {
         ></textarea>
       </div>
       
+      // Add this to your form rendering section
       {formStatus.error && (
-        <p className={styles.errorMessage} style={{ color: '#ef4444' }}>
-          {formStatus.error}
-        </p>
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage} style={{ color: '#ef4444' }}>
+            ⚠️ {formStatus.error}
+          </p>
+          {formStatus.error.includes('AWS') && (
+            <p className={styles.errorHint} style={{ color: '#94a3b8', fontSize: '14px' }}>
+              This might be a temporary server issue. Please try again in a few moments.
+            </p>
+          )}
+        </div>
       )}
       
       {formStatus.submitted && (
-        <p className={styles.successMessage} style={{ color: darkMode ? '#4ade80' : '#16a34a' }}>
-          Thank you! Your message has been sent successfully.
-        </p>
+        <div className={styles.successContainer}>
+          <p className={styles.successMessage} style={{ color: darkMode ? '#4ade80' : '#16a34a' }}>
+            ✅ Thank you! Your message has been sent successfully.
+          </p>
+          <p className={styles.successHint} style={{ color: darkMode ? '#94a3b8' : '#4b5563', fontSize: '14px' }}>
+            We'll get back to you as soon as possible.
+          </p>
+        </div>
       )}
       
       <button 

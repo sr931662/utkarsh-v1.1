@@ -61,6 +61,17 @@ const handleSubmit = async (e) => {
     return;
   }
 
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.email)) {
+    setFormStatus({
+      submitting: false,
+      submitted: false,
+      error: 'Please enter a valid email address'
+    });
+    return;
+  }
+
   try {
     const response = await authAPI.sendContactEmail(formData);
     

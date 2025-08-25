@@ -96,7 +96,7 @@ exports.sendContactEmail = async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: 'There was an error sending the message. Please try again later.',
-      stack: err.message, // debug ke liye
+      stack: err, // debug ke liye
     });
   }
 };

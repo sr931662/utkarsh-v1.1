@@ -46,33 +46,54 @@ const Contact = () => {
 
     fetchContactInfo();
   }, []);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus({ submitting: true, submitted: false, error: null });
+  // client/src/components/contact/contact.jsx - Update handleSubmit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setFormStatus({ submitting: true, submitted: false, error: null });
 
-    try {
-      const response = await authAPI.sendContactEmail(formData);
-      if (response.status === 200) {
-        setFormStatus({ submitting: false, submitted: true, error: null });
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          organization: '',
-          subject: '',
-          message: ''
-        });
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (err) {
-      setFormStatus({
-        submitting: false,
-        submitted: false,
-        error: err.message || 'Failed to send message. Please try again later.'
+  // Basic validation
+  if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+    setFormStatus({
+      submitting: false,
+      submitted: false,
+      error: 'Please fill in all required fields'
+    });
+    return;
+  }
+
+  try {
+    const response = await authAPI.sendContactEmail(formData);
+    
+    if (response.success) {
+      setFormStatus({ 
+        submitting: false, 
+        submitted: true, 
+        error: null 
       });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        organization: '',
+        subject: '',
+        message: ''
+      });
+      
+      // Auto-clear success message after 5 seconds
+      setTimeout(() => {
+        setFormStatus(prev => prev.submitted ? { ...prev, submitted: false } : prev);
+      }, 5000);
     }
-  };
+  } catch (err) {
+    setFormStatus({
+      submitting: false,
+      submitted: false,
+      error: err.message || 'Failed to send message. Please try again later.'
+    });
+  }
+};
   if (loading) {
     return (
       <section 

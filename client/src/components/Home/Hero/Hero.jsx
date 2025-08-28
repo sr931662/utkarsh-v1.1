@@ -107,7 +107,7 @@ const Hero = () => {
             {`${profileData.bio}`}
           </p>
           <h1 className={styles.title} ref={titleRef}>
-            {`Mr. ${profileData.name}` || 'Mr. Utkarsh Gupta'}
+            {`${profileData.name}` || 'Utkarsh Gupta'}
           </h1>
           <p className={styles.subtitle} ref={subtitleRef}>
             {profileData.professionalTitle || 'Associate Consultant & Data Analytics Professional'}

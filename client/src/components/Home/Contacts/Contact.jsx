@@ -384,32 +384,7 @@ const handleSubmit = async (e) => {
               </h3>
               
               <div className={styles.infoList}>
-                <div className={styles.infoItem}>
-                  <div 
-                    className={styles.infoIcon}
-                    style={{ backgroundColor: darkMode ? 'rgba(96, 165, 250, 0.1)' : 'rgba(47, 220, 232, 0.1)' }}
-                  >
-                    <FontAwesomeIcon icon={faMapLocation} className={styles.fIcon} />
-                  </div>
-                  <div>
-                    <h4 
-                      className={styles.infoHeading}
-                      style={{ color: darkMode ? '#e2e8f0' : '#1f2937' }}
-                    >
-                      Office Address
-                    </h4>
-                    <p 
-                      className={styles.infoText}
-                      style={{ color: darkMode ? '#94a3b8' : '#4b5563' }}
-                    >
-                      {contactInfo?.affiliation?.department || ''}<br />
-                      {contactInfo?.affiliation?.institution || ''}<br />
-                      {contactInfo?.location?.address || ''}<br />
-                      {contactInfo?.location?.city ? `${contactInfo.location.city}, ${contactInfo.location.state || ''} ${contactInfo.location.postalCode || ''}` : ''}
-                    </p>
-                  </div>
-                </div>
-                
+                               
                 <div className={styles.infoItem}>
                   <div 
                     className={styles.infoIcon}
@@ -452,30 +427,6 @@ const handleSubmit = async (e) => {
                       style={{ color: darkMode ? '#94a3b8' : '#4b5563' }}
                     >
                       {contactInfo?.phoneNumber || '+1 (860) 818-6602'}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className={styles.infoItem}>
-                  <div 
-                    className={styles.infoIcon}
-                    style={{ backgroundColor: darkMode ? 'rgba(96, 165, 250, 0.1)' : 'rgba(47, 220, 232, 0.1)' }}
-                  >
-                    <FontAwesomeIcon icon={faTimeline} className={styles.fIcon} />
-                  </div>
-                  <div>
-                    <h4 
-                      className={styles.infoHeading}
-                      style={{ color: darkMode ? '#e2e8f0' : '#1f2937' }}
-                    >
-                      Office Hours
-                    </h4>
-                    <p 
-                      className={styles.infoText}
-                      style={{ color: darkMode ? '#94a3b8' : '#4b5563' }}
-                    >
-                      {contactInfo?.affiliation?.officeHours || 'Monday - Friday: 9:00 AM - 5:00 PM'}<br />
-                      By appointment only
                     </p>
                   </div>
                 </div>
@@ -572,7 +523,7 @@ const handleSubmit = async (e) => {
           }}
         >
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d120254.58161449396!2d-74.06157091765019!3d40.68999594905293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e1!3m2!1sen!2sin!4v1746984266291!5m2!1sen!2sin" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30154.46541158347!2d-74.4614855349393!3d40.48828017137788!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3c355f06a92a5%3A0x25925506798e230c!2sNew%20Brunswick%2C%20NJ%2C%20USA!5e1!3m2!1sen!2sin!4v1756391838141!5m2!1sen!2sin" 
             allowFullScreen 
             className={styles.map} 
             loading="lazy"

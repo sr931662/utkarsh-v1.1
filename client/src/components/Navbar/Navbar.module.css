@@ -76,7 +76,7 @@
 .linkText {
   position: relative;
   z-index: 1;
-  font-size: 0.75rem;
+  font-size: 1rem;
   transition: color 0.3s ease;
 }
 

@@ -50,6 +50,13 @@
   font-weight: 500;
   transition: color 0.3s ease;
 }
+.bioinfo {
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
 
 .dark .subtitle {
   color: #94a3b8;

@@ -117,7 +117,7 @@ const handleLogout = async () => {
       <div className={styles.container}>
         <Link to={'/'} className={styles.logo}>
           <span className={styles.logoText}>
-            {isAdminPortal ? 'Admin' : 'Home'}
+            {isAdminPortal ? 'Admin' : 'Utkarsh Gupta'}
           </span>
           <span className={styles.logoDot}>.</span>
         </Link>

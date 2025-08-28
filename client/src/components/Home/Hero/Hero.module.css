@@ -50,8 +50,8 @@
   font-weight: 500;
   transition: color 0.3s ease;
 }
-p .bioinfo {
-  font-size: 0.75rem;
+.bioinfo {
+  font-size: 1rem;
   color: #4b5563;
   margin-bottom: 1.5rem;
   font-weight: 500;

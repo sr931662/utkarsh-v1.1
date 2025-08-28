@@ -183,10 +183,6 @@ const handleLogout = async () => {
             <Link to="/" className={styles.viewPublicSite}>
               View Public Site
             </Link>
-          ) : (
-            <Link to="/login" className={styles.adminLogin}>
-              Admin Portal
-            </Link>
           )}
           
           <div className={styles.themeToggleContainer}>

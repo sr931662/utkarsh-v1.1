@@ -103,6 +103,9 @@ const Hero = () => {
     <section className={`${styles.hero} ${darkMode ? styles.dark : ''}`} ref={heroRef}>
       <div className={styles.container}>
         <div className={styles.content}>
+          <p className={styles.subtitle} ref={subtitleRef}>
+            {`${profileData.bio}`}
+          </p>
           <h1 className={styles.title} ref={titleRef}>
             {`Mr. ${profileData.name}` || 'Mr. Utkarsh Gupta'}
           </h1>

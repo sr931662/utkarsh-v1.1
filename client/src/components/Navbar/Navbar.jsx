@@ -183,7 +183,11 @@ const handleLogout = async () => {
             <Link to="/" className={styles.viewPublicSite}>
               View Public Site
             </Link>
-          )}
+          ) : (
+            // <Link to="/" className={styles.viewPublicSite}>
+            //   View Public Site
+            // </Link>
+      )}
           
           <div className={styles.themeToggleContainer}>
             <button 

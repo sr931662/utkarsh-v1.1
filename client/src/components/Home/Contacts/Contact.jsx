@@ -327,7 +327,6 @@ const handleSubmit = async (e) => {
         ></textarea>
       </div>
       
-      // Add this to your form rendering section
       {formStatus.error && (
         <div className={styles.errorContainer}>
           <p className={styles.errorMessage} style={{ color: '#ef4444' }}>

@@ -183,11 +183,7 @@ const handleLogout = async () => {
             <Link to="/" className={styles.viewPublicSite}>
               View Public Site
             </Link>
-          ) : (
-            // <Link to="/" className={styles.viewPublicSite}>
-            //   View Public Site
-            // </Link>
-      )}
+          ) : null}
           
           <div className={styles.themeToggleContainer}>
             <button 
@@ -263,15 +259,8 @@ const handleLogout = async () => {
               <a href="/#contact" className={styles.mobileNavLink} onClick={toggleMobileMenu}>
                 <span className={styles.mobileLinkText}>Get in touch</span>
               </a>
-            <Link to="/login" className={styles.mobileAdminLogin} onClick={toggleMobileMenu}>
-              <span className={styles.mobileLinkText}>Admin Portal</span>
-            </Link>
             </>
-          ) : (
-            <Link to="/login" className={styles.mobileAdminLogin} onClick={toggleMobileMenu}>
-              <span className={styles.mobileLinkText}>Admin Portal</span>
-            </Link>
-          )}
+          ) : null}
 
           <button 
             className={styles.mobileThemeToggle}
